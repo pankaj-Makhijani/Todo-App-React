@@ -1,0 +1,122 @@
+BY PANKAJ MAKHIJANI
+
+//Insert one
+db.posts.insert({
+   title:'Post One',
+   body:'Body of pot one',
+   category:'News',
+   likes:4,
+   tagss:['news','events'],
+   users:{
+     name:'John cena',
+     status:'author'
+   },
+   date:Date()
+})
+
+//Insert Many
+db.posts.insertMany([
+  {
+
+    title:'Post 2',
+    body:'Body of post 2',
+    category:'Technology',
+    date:Date()
+  },
+  {
+
+    title:'Post 3',
+    body:'Body of post 3',
+    category:'News',
+    date:Date()
+  },
+  {
+    title:'Post 4',
+    body:'Body of post 4',
+    category:'Entertainment',
+    date:Date()
+  }
+])
+
+//Update all items
+db.posts.update({title:'Post One'},
+ {
+   title:'Post One',
+   body:'New body ofPost 1',
+   date:Date()
+ },
+ {
+   upsert:true
+ }
+)
+
+//Update partiular items
+db.posts.update({title:'Post One'},
+ {
+   $set:{
+     title:'Post One',
+     body:'New body ofPost 1',
+     likes:10
+   }
+ }
+)
+
+//increment likes
+db.posts.update({ title:'Post One' }, {$inc: { likes: 2}})
+
+//rename likes to views
+db.posts.update({ title:'Post One' }, {$rename: { likes: 'views'}})
+
+//remove post 4
+db.posts.remove({ title:'Post 4' })
+
+//add coments
+db.posts.update({ title: 'Post One'},
+ {
+   $set:{
+     comments:[
+	{
+ 	   user:'Mia khalifa',
+	   body: 'Comment One',
+	   date: Date()
+        },
+	{
+	   user: 'Johny sins',
+ 	   body: 'Comment Two',
+	   date: Date()
+	}
+      ]
+   }
+ }
+) 
+
+//finding Post's Mia Khalifa comment
+db.posts.find({ 
+  comments: {
+     $elemMatch: {
+        user:'Mia khalifa'
+        }
+      } 
+})
+
+//To searchtext creating index
+db.posts.createIndex({title: 'text'})
+
+//finding post with Post O in their contents
+db.posts.find({
+   $text: {
+	$search: "\"Post O\""
+   }
+})
+
+//Adding views for using greater than or less than
+db.posts.update({ title: 'Post One'}, {$set:{views: 10}})
+
+//using greater than or less than
+db.posts.find({views: {$gt:3}})
+db.posts.find({views: {$gte:3}})
+db.posts.find({views: {$lt:3}})
+db.posts.find({views: {$lte:3}})
+
+//exit
+exit
